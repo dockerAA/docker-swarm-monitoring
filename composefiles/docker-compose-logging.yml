@@ -7,7 +7,7 @@ services:
         networks:
             - logging
         volumes:
-            - /var/dockerdata/elasticsearch/data:/usr/share/elasticsearch/data
+            - esdata:/usr/share/elasticsearch/data
         labels:
             com.docker.stack.namespace: "logging"
             com.docker.service.name: "elasticsearch"
@@ -32,7 +32,7 @@ services:
             - ELASTICSEARCH_PORT=9200
             - INTERVAL_IN_HOURS=12
         volumes:
-            - /var/dockerdata/curator:/var/curator
+            - cudata:/var/curator
         labels:
             com.docker.stack.namespace: "logging"
             com.docker.service.name: "curator"
@@ -78,7 +78,7 @@ services:
         depends_on:
             - elasticsearch        
         ports:
-            - "5601:5601"          
+            - "9080:5601"          
         networks:
             - logging
         environment:
@@ -100,5 +100,9 @@ services:
 
 networks:
     logging:
-        external: true
 
+volumes:
+  esdata:
+    driver: local
+  cudata:
+    driver: local
